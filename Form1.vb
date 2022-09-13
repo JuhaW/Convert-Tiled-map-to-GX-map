@@ -8,16 +8,25 @@ Public Class Form1
 
 		Init()
 
+		'for faster testing
+		Dim loadpath As String = "C:\qb64\gx-0.4.0-alpha\games\Tutorial1\kanga.tmx"
+		M.map_filename = "kanga.tmx"
+		M.map_path = System.IO.Path.GetDirectoryName(loadpath) + "\"
+		main()
+		MsgBox("Converted", MsgBoxStyle.DefaultButton1)
+		Info_text()
+
+
 	End Sub
 
-	Private Sub main()
+	Private Sub Main()
 
 		'SaveMap(My.Computer.FileSystem.CurrentDirectory)
-		Dim loadpath As String = "C:\qb64\gx-0.4.0-alpha\games\Tutorial1\"
-		Dim loadname As String = "untitled.tmx"
-		Dim savename As String = "untitled.gxm"
+		'Dim loadpath As String = "C:\qb64\gx-0.4.0-alpha\games\Tutorial1\"
+		'Dim loadname As String = "untitled.tmx"
+		'Dim savename As String = "untitled.gxm"
 
-		Xml_read(loadpath + loadname)
+		Xml_read(M.map_path + M.map_filename)
 		'image.source
 		M.tileset_image_filename = Xml_read2(M.map_path + M.tileset_source_filename, "image.source")
 
@@ -32,7 +41,9 @@ Public Class Form1
 
 
 		'Dim filename As String = System.IO.Path.GetFileName(Path)
-		SaveMap(M.map_path + loadname, M.map_path + savename, bytes_packed)
+		Dim savename = Path.GetFileNameWithoutExtension(M.map_filename) + ".gxm"
+		'SaveMap(M.map_path + loadname, M.map_path + savename, bytes_packed)
+		SaveMap(M.map_path + M.map_filename, M.map_path + savename, bytes_packed)
 
 
 		'Dim a$ = "2222222222222222222222222222222222222222"
@@ -69,11 +80,6 @@ Public Class Form1
 		'Dim CustomerData As Byte() = (From c In customerQuery).ToArray()
 
 		Dim c As Byte()
-
-		'c(0) = BitConverter.GetBytes(M.version).
-		'c.Append(BitConverter.GetBytes(M.mapcol))
-		' Write this array to the file.
-		Dim array() As Int32 = {1, 4, 6, 7, 11, 55, 777, 23, 266, 44, 82, 93}
 
 		' Create the BinaryWriter and use File.Open to create the file.
 		Using writer As New BinaryWriter(File.Open(outputfile, FileMode.Create))
@@ -154,22 +160,28 @@ Public Class Form1
 		xmlnode = xmldoc.GetElementsByTagName("tileset")
 		With xmlnode.Item(0)
 			M.tileset_source_filename = .Attributes("source").Value
-
 		End With
 
-		xmlnode = xmldoc.GetElementsByTagName("data")
-		'Dim s = xmlnode.Item(0).ChildNodes(0).InnerText.Trim.Split(New [Char]() {CChar(vbCrLf), CChar(vbLf), CChar(",")})
-		Dim s = xmlnode.Item(0).ChildNodes(0).InnerText
-		Dim z = Regex.Replace(s, "[^,0-9]", "").Split(",")
-		Dim num = New List(Of Integer)
-		For Each j As String In z
-			M.tiledata.Add(j)
+		'read all layers
+		xmlnode = xmldoc.GetElementsByTagName("layer")
+		'how many layers
+		M.layer = xmlnode.Count
+
+		Dim s As String, z As String()
+
+		For Each layer In xmlnode
+
+			s = layer.InnerText
+			z = Regex.Replace(s, "[^,0-9]", "").Split(",")
+
+			For Each j As String In z
+				M.tiledata.Add(j)
+			Next
+			'last add 0 
+			M.tiledata.Add(0)
 		Next
-		'last add 0 
-		M.tiledata.Add(0)
+
 		fs.Close()
-
-
 
 	End Sub
 
@@ -217,7 +229,31 @@ Public Class Form1
 
 			M.map_filename = OpenFileDialog1.SafeFileName
 			M.map_path = System.IO.Path.GetDirectoryName(OpenFileDialog1.FileName) + "\"
+
 			main()
+			MsgBox("Converted", MsgBoxStyle.DefaultButton1)
+			Info_text()
 		End If
+	End Sub
+	Private Sub Info_text()
+		'Dim tilefilename = Path.GetFileNameWithoutExtension(M.map_filename) + ".gmx"
+		Dim tilefilename = M.map_path + M.tileset_image_filename
+		With Txtb
+			.Text = ""
+			.Text += "Layers        :" + vbTab + M.layer.ToString + vbCrLf
+			.Text += "Map size      :" + vbTab + M.mapcol.ToString + " x " + M.maprow.ToString + " tiles" + vbCrLf
+			.Text += "Map file      :" + vbTab + M.map_path + M.map_filename + vbCrLf
+			.Text += vbCrLf
+			.Text += "Tile size     :" + vbTab + M.tilewidth.ToString + " x " + M.tileheight.ToString + " pixels" + vbCrLf
+			.Text += "Tile file used:" + vbTab + tilefilename + vbCrLf
+
+			.Select(0, 0)
+
+		End With
+
+	End Sub
+	Private Sub OpenFileDialog1_FileOk(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles OpenFileDialog1.FileOk
+
+
 	End Sub
 End Class

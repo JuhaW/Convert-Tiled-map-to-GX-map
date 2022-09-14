@@ -1,8 +1,6 @@
 ﻿Module Module1
 
-
-
-	Public Structure Moi
+	Public Structure Map_variables
 		Dim version As Int16 '= 2
 		Dim mapcol As Int16
 		Dim maprow As Int16
@@ -26,22 +24,17 @@
 		Dim map_path As String
 
 	End Structure
-	Public M As New Moi
+	Public M As New Map_variables
 
 
 	Public Sub Init()
 		M.version = 2
-		M.layer = 1
+		'M.layer = 1
 		M.isometric = 0
 		M.maptile_data_size = 0
 		M.tiledata = New List(Of Int16)
 		M.tiledata.Clear()
 		M.tileset_version = 1
-		'M.tiledata.AddRange({1, 2, 3, 4, 1, 2, 3, 4})
-		'M.tiledata.AddRange({1, 2, 3, 4, 1, 2, 3, 4})
-		'M.tiledata.AddRange({1, 2, 3, 4, 1, 2, 3, 4})
-		'M.tiledata.AddRange({1, 2, 3, 4, 1, 2, 3, 4})
-		''M.tiledata.Add(2)
 
 
 	End Sub

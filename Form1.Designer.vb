@@ -68,8 +68,10 @@ Partial Class Form1
         Me.Txtb.Multiline = True
         Me.Txtb.Name = "Txtb"
         Me.Txtb.ScrollBars = System.Windows.Forms.ScrollBars.Both
-        Me.Txtb.Size = New System.Drawing.Size(552, 341)
-        Me.Txtb.TabIndex = 2
+        Me.Txtb.Size = New System.Drawing.Size(552, 223)
+        Me.Txtb.TabIndex = 1
+        Me.Txtb.TabStop = False
+        Me.Txtb.Text = "New .gxm file folder is the same than source file" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10)
         Me.Txtb.WordWrap = False
         '
         'Form1
@@ -77,14 +79,13 @@ Partial Class Form1
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 15.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
-        Me.AutoSize = True
-        Me.ClientSize = New System.Drawing.Size(552, 365)
+        Me.ClientSize = New System.Drawing.Size(552, 247)
         Me.Controls.Add(Me.Txtb)
         Me.Controls.Add(Me.MenuStrip1)
         Me.MainMenuStrip = Me.MenuStrip1
         Me.Name = "Form1"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Convert Tiled map to QB64 GX map"
+        Me.Text = "Convert Tiled map (.tmx) to QB64 GX map (.gxm)"
         Me.MenuStrip1.ResumeLayout(False)
         Me.MenuStrip1.PerformLayout()
         Me.ResumeLayout(False)

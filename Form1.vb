@@ -9,22 +9,18 @@ Public Class Form1
 		Init()
 
 		'for faster testing
-		Dim loadpath As String = "C:\qb64\gx-0.4.0-alpha\games\Tutorial1\kanga.tmx"
-		M.map_filename = "kanga.tmx"
-		M.map_path = System.IO.Path.GetDirectoryName(loadpath) + "\"
-		main()
-		MsgBox("Converted", MsgBoxStyle.DefaultButton1)
-		Info_text()
+		'Dim loadpath As String = "C:\qb64\gx-0.4.0-alpha\games\Tutorial1\kanga.tmx"
+		'M.map_filename = "kanga.tmx"
+		'M.map_path = System.IO.Path.GetDirectoryName(loadpath) + "\"
+		'main()
+		''MsgBox("Converted", MsgBoxStyle.DefaultButton1)
+		'Info_text()
 
 
 	End Sub
 
 	Private Sub Main()
 
-		'SaveMap(My.Computer.FileSystem.CurrentDirectory)
-		'Dim loadpath As String = "C:\qb64\gx-0.4.0-alpha\games\Tutorial1\"
-		'Dim loadname As String = "untitled.tmx"
-		'Dim savename As String = "untitled.gxm"
 
 		Xml_read(M.map_path + M.map_filename)
 		'image.source
@@ -46,23 +42,6 @@ Public Class Form1
 		SaveMap(M.map_path + M.map_filename, M.map_path + savename, bytes_packed)
 
 
-		'Dim a$ = "2222222222222222222222222222222222222222"
-		'Dim buffer As Byte() = Encoding.UTF8.GetBytes(a$)
-		'Dim b = Compress(buffer)
-
-		'Dim c = System.Text.Encoding.ASCII.GetString(b)
-		'TextBox1.Text = Len(c).ToString
-		'For Each i In c
-		'	TextBox1.Text += i
-		'Next
-
-		'Dim h() As Byte = {&H78, &H9C, &H63, &H60, &HC0, &H6, &H18, &H19, &H98, &H18, &H98, &H19, &H58, &H18, &H58, &H19, &HB8, &H18, &HB8, &H19, &H78, &H18, &H78, &H19, &HF8, &H80, &HA2, &H0, &H2, &HF2, &H0, &H4C}
-		'h = Decompress(h)
-
-		'TextBox1.Text += vbCrLf
-		'For Each i In h
-		'	TextBox1.Text += i
-		'Next
 	End Sub
 
 	Private Function Convert_int16_to_bytes(listInt16 As List(Of Int16)) As Array
@@ -146,8 +125,6 @@ Public Class Form1
 
 		Dim xmldoc As New XmlDataDocument()
 		Dim xmlnode As XmlNodeList
-		Dim i As Integer
-		Dim str As String
 		Dim fs As New FileStream(inputfile, FileMode.Open, FileAccess.Read)
 		xmldoc.Load(fs)
 		xmlnode = xmldoc.GetElementsByTagName("map")
@@ -200,8 +177,6 @@ Public Class Form1
 			End Using 'outputCompressedMs
 		End Using 'inputMs
 
-
-
 	End Function
 
 	Public Function Decompress(ByVal bytes As Byte()) As Byte()
@@ -211,16 +186,12 @@ Public Class Form1
 
 				Using zl As New ZLibStream(inputMs, CompressionMode.Decompress, True)
 					zl.CopyTo(outputCompressedMs)
-					'inputMs.CopyTo(zl)
-					'inputMs.write()
 				End Using
 
 				Return outputCompressedMs.ToArray
 
-			End Using 'outputCompressedMs
-		End Using 'inputMs
-
-
+			End Using
+		End Using
 
 	End Function
 
@@ -230,30 +201,35 @@ Public Class Form1
 			M.map_filename = OpenFileDialog1.SafeFileName
 			M.map_path = System.IO.Path.GetDirectoryName(OpenFileDialog1.FileName) + "\"
 
-			main()
-			MsgBox("Converted", MsgBoxStyle.DefaultButton1)
+			Main()
+			MsgBox("Converted", MsgBoxStyle.DefaultButton1, "")
 			Info_text()
 		End If
 	End Sub
+
 	Private Sub Info_text()
-		'Dim tilefilename = Path.GetFileNameWithoutExtension(M.map_filename) + ".gmx"
+
 		Dim tilefilename = M.map_path + M.tileset_image_filename
+		Dim map_sixe_pixels() = {M.mapcol * M.tilewidth, M.maprow * M.tileheight}
+		Dim s = StrDup(12, "-")
+
 		With Txtb
 			.Text = ""
-			.Text += "Layers        :" + vbTab + M.layer.ToString + vbCrLf
-			.Text += "Map size      :" + vbTab + M.mapcol.ToString + " x " + M.maprow.ToString + " tiles" + vbCrLf
-			.Text += "Map file      :" + vbTab + M.map_path + M.map_filename + vbCrLf
-			.Text += vbCrLf
-			.Text += "Tile size     :" + vbTab + M.tilewidth.ToString + " x " + M.tileheight.ToString + " pixels" + vbCrLf
-			.Text += "Tile file used:" + vbTab + tilefilename + vbCrLf
+			.Text += "MAP            " + vbCrLf
+			.Text += "Layers     :" + vbTab + M.layer.ToString + vbCrLf
+			.Text += "Size       :" + vbTab + M.mapcol.ToString + " x " + M.maprow.ToString + " tiles" + "," +
+																 map_sixe_pixels(0).ToString + " x " + map_sixe_pixels(1).ToString + " pixels" + vbCrLf
+			.Text += "File       :" + vbTab + M.map_path + M.map_filename + vbCrLf
+			.Text += s + vbCrLf
+			.Text += "TILE           " + vbCrLf
+			.Text += "Size       :" + vbTab + M.tilewidth.ToString + " x " + M.tileheight.ToString + " pixels" + vbCrLf
+			.Text += "Image used :" + vbTab + tilefilename + vbCrLf
 
 			.Select(0, 0)
 
 		End With
 
 	End Sub
-	Private Sub OpenFileDialog1_FileOk(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles OpenFileDialog1.FileOk
 
 
-	End Sub
 End Class

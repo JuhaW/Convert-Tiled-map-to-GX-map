@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Convert Tiled map to GX map": {
+      "commandName": "Project",
+      "hotReloadEnabled": true
+    }
+  }
+}

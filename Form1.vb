@@ -6,6 +6,7 @@ Imports System.Xml
 Public Class Form1
 	Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
+
 		Init()
 
 		'for faster testing
@@ -144,6 +145,7 @@ Public Class Form1
 		'how many layers
 		M.layer = xmlnode.Count
 
+
 		Dim s As String, z As String()
 
 		For Each layer In xmlnode
@@ -167,7 +169,7 @@ Public Class Form1
 		Using inputMs As New MemoryStream(bytes)
 			Using outputCompressedMs As New MemoryStream
 
-				Using zl As New ZLibStream(outputCompressedMs, CompressionMode.Compress)
+				Using zl As New ZLibStream(outputCompressedMs, CompressionLevel.Fastest) ' CompressionMode.Compress)
 					inputMs.CopyTo(zl)
 					'inputMs.Write(zl)
 				End Using

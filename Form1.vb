@@ -6,8 +6,7 @@ Imports System.Xml
 Public Class Form1
 	Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-
-		Init()
+		'Init()
 
 		'for faster testing
 		'Dim loadpath As String = "C:\qb64\gx-0.4.0-alpha\games\Tutorial1\kanga.tmx"
@@ -198,6 +197,8 @@ Public Class Form1
 	End Function
 
 	Private Sub OpenToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles OpenToolStripMenuItem.Click
+
+		Init()
 		If OpenFileDialog1.ShowDialog = DialogResult.OK Then
 
 			M.map_filename = OpenFileDialog1.SafeFileName
